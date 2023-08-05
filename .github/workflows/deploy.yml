@@ -26,13 +26,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
+      - name: Login to GitHub Container Registry
+        id: login-ghcr
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Output image tag
+        id: image-tag
+        run: |
+          echo "tag=$(
+            echo ghcr.io/${{ github.sha }}
+          )" >> $GITHUB_OUTPUT
+
       - name: Docker build
         uses: docker/build-push-action@v3
         with:
           file: docker/Dockerfile
           context: .
           push: false
-          tags: ${{ github.sha }}
+          tags: ${{ steps.image-tag.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -46,7 +61,7 @@ jobs:
 
       - name: Push to container registry
         run: |
-          docker push ${{ github.sha }}
+          docker push ${{ steps.image-tag.outputs.tag }}
 
   artifacts:
     runs-on: ubuntu-latest
