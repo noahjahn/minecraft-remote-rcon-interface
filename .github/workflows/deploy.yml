@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -41,9 +44,15 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
+      - name: Push to container registry
+        run: |
+          docker push ${{ github.sha }}
+
   artifacts:
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      packages: read
     container:
       image: ${{ github.sha }}
     steps:
