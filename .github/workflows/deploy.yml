@@ -12,7 +12,7 @@ jobs:
       contents: read
       packages: write
     outputs:
-      tag: ${{ steps.meta.outputs.tags[0] }}
+      tag: ${{ steps.meta.outputs.tags }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
