@@ -70,6 +70,11 @@ jobs:
     container:
       image: ${{ needs.build.outputs.tag }}
     steps:
+      - run: ls -al
+      - run: pwd
+      - run: ls -al /home/node/app
+      - run: ls -al /home/node/app/dist
+      - run: ls -al /home/node/app/dist/spa
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
