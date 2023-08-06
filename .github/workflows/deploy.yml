@@ -73,6 +73,7 @@ jobs:
         - ${{ github.workspace }}:/home/node/app
     steps:
       - run: echo "${{ github.workspace }}"
+      - run: echo "${{ needs.build.outputs.tag }}"
       - run: ls -al
       - run: pwd
       - name: Upload build artifacts
