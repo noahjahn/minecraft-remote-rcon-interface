@@ -70,7 +70,7 @@ jobs:
     container:
       image: ${{ needs.build.outputs.tag }}
       volumes:
-        - ./dist:/home/node/app/dist
+        - ${{ github.workspace }}:/home/node/app
     steps:
       - run: ls -al
       - run: pwd
@@ -78,7 +78,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: github-pages
-          path: dist/spa
+          path: ${{ github.workspace }}/dist/spa
 
   deploy:
     needs: artifacts
