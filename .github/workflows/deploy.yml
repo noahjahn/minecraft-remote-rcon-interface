@@ -69,18 +69,12 @@ jobs:
       packages: read
     container:
       image: ${{ needs.build.outputs.tag }}
-      volumes:
-        - ${{ github.workspace }}:/home/node/app
     steps:
-      - run: echo "${{ github.workspace }}"
-      - run: echo "${{ needs.build.outputs.tag }}"
-      - run: ls -al
-      - run: pwd
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: github-pages
-          path: ${{ github.workspace }}/dist/spa
+          path: /home/node/app/dist/spa
 
   deploy:
     needs: artifacts
