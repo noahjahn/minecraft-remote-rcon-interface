@@ -72,6 +72,7 @@ jobs:
       volumes:
         - ${{ github.workspace }}:/home/node/app
     steps:
+      - run: echo "${{ github.workspace }}"
       - run: ls -al
       - run: pwd
       - name: Upload build artifacts
